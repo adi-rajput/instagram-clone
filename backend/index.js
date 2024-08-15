@@ -3,7 +3,7 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import dotenv from "dotenv"
 import connectDB from "./utils/db.js"
-
+import userRoute from "./routes/user_routes.js"
 dotenv.config({});
 
 const app = express();
@@ -25,6 +25,10 @@ const corsOptions={
 }
 app.use(cors(corsOptions));
 
+
+//routes
+app.use("/api/v1/user" , userRoute);
+//"http://locolhost:8000/api/v1/user/register"
 
 app.listen(PORT,()=>{
     connectDB();
