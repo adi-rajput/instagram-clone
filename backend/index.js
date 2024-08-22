@@ -4,6 +4,9 @@ import cookieParser from "cookie-parser"
 import dotenv from "dotenv"
 import connectDB from "./utils/db.js"
 import userRoute from "./routes/user_routes.js"
+import postRoute from "./routes/post_routes.js"
+import messageRoute from "./routes/message_routes.js"
+
 dotenv.config({});
 
 const app = express();
@@ -28,6 +31,8 @@ app.use(cors(corsOptions));
 
 //routes
 app.use("/api/v1/user" , userRoute);
+app.use("/api/v1/user" , postRoute);
+app.use("/api/v1/user" , messageRoute);
 //"http://locolhost:8000/api/v1/user/register"
 
 app.listen(PORT,()=>{

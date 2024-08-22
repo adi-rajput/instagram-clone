@@ -1,4 +1,4 @@
-import { User } from "../models/user_models.js";
+import  User  from "../models/user_models.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getDataUri from "../utils/data_uri.js";
@@ -59,6 +59,10 @@ export const login = async (req, res) => {
         success: false,
       });
     }
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
+      expiresIn: "1d",
+    });
+    
     user = {
       _id: user._id,
       username: user.username,
@@ -70,9 +74,6 @@ export const login = async (req, res) => {
       posts: user.posts,
     };
 
-    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
-      expiresIn: "1d",
-    });
     return res
       .cookie("token", token, {
         httpOnly: true,
