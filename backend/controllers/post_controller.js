@@ -135,6 +135,52 @@ export const dislikePost = async (req, res) => {
   }
 };
 
+export const addComment = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const commntKrneWala = req.id;
+    const { text } = req.body;
+    const post = await Post.findById(postId);
+    if (!text) return res.status(400).json({ message: "text required" });
+
+    const comment = await Comment
+      .create({
+        text,
+        author: commntKrneWala,
+        post: postId,
+      })
+      .populate({
+        path: "author",
+        select: "username,profilePicture",
+      });
+    post.comments.push(comment._id);
+    await post.save();
+    return res.status(201).json({
+      message: "comment added successfully",
+      comment,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCommentsofPost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const comments = await Comment.find({
+      post: postId,
+    }).populate("author", "username,profilePicture");
+    if (!comments) return res.status(404).json({ message: "no comments" });
+
+    return res.status(200).json({
+      success: true,
+      comments,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const deletePost = async (req, res) => {
   try {

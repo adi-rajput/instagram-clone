@@ -1,8 +1,9 @@
-import  User  from "../models/user_models.js";
+import User from "../models/user_models.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getDataUri from "../utils/data_uri.js";
 import cloudinary from "../utils/cloudinary.js";
+import { Post } from "../models/post_model.js";
 
 // Register a new user
 export const register = async (req, res) => {
@@ -25,7 +26,7 @@ export const register = async (req, res) => {
     await User.create({
       username,
       email,
-      password:hashPassword,
+      password: hashPassword,
     });
     return res.status(201).json({
       message: "Account created successfully",
@@ -62,7 +63,16 @@ export const login = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
-    
+    const populatePosts = await Promise.all(
+      user.posts.map(async (postId) => {
+        const post = await Post.findById(postId);
+        if(post.author.equals(user._id))
+        {
+          return post;
+        }
+        return null;
+      })
+    );
     user = {
       _id: user._id,
       username: user.username,
@@ -104,7 +114,7 @@ export const logout = async (_, res) => {
 export const getProfile = async (req, res) => {
   try {
     const userId = req.params.id;
-    let user = await User.findById(userId).select('-password');
+    let user = await User.findById(userId).select("-password");
     return res.status(200).json({
       user,
       success: true,
@@ -125,7 +135,7 @@ export const editProfile = async (req, res) => {
       const fileUri = getDataUri(profilePicture);
       cloudResponse = await cloudinary.uploader.upload(fileUri);
     }
-    const user = await User.findById(userId).select('-password');
+    const user = await User.findById(userId).select("-password");
     if (!user) {
       return res.status(404).json({
         message: "User not found",
@@ -224,3 +234,4 @@ export const followOrUnfollow = async (req, res) => {
     console.log(error);
   }
 };
+ 
