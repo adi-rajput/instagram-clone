@@ -4,6 +4,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 import axios from "axios";
+import { Link } from "react-router-dom";
 const Login = () => {
   const [input, setInput] = useState({
     email: "",
@@ -84,6 +85,7 @@ const Login = () => {
           />
         </div>
         <Button>Login</Button>
+        <span className="text-center">Don't have an account? <Link to="/signup" className="text-blue-600">SignUp</Link></span>
       </form>
     </div>
   );
