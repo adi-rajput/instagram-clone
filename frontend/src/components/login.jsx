@@ -1,16 +1,17 @@
 import { Label } from "@radix-ui/react-label";
-import React, { useState } from "react";
+import React, { useState }   from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
   const [input, setInput] = useState({
     email: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const changeEventHandler = (e) => {
     setInput({
       ...input,
@@ -32,6 +33,7 @@ const Login = () => {
         }
       );
       if (res.data.success) {
+        navigate("/")
         toast.success(res.data.message);
         setInput({ email: "", password: "" });
       }
@@ -84,7 +86,16 @@ const Login = () => {
             className="my-2 focus-visible:ring-transparent"
           />
         </div>
-        <Button>Login</Button>
+        {
+          loading ? (
+           <Button>
+              <Loader2 className="w-4 h-4 nr-2 animate-spin" />
+              Please Wait
+           </Button> 
+          ) : (
+            <Button>Login</Button>
+          )
+        }     
         <span className="text-center">Don't have an account? <Link to="/signup" className="text-blue-600">SignUp</Link></span>
       </form>
     </div>

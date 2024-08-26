@@ -4,7 +4,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";``
 const Signup = () => {
   const [input, setInput] = useState({
     username: "",
@@ -12,6 +12,7 @@ const Signup = () => {
     password: "",
   });
   const [loading, setLoading] = useState(false);
+  const navigate =  useNavigate();
   const changeEventHandler = (e) => {
     setInput({
       ...input,
@@ -33,10 +34,12 @@ const Signup = () => {
         }
       );
       if (res.data.success) {
+        navigate("/login")
         toast.success(res.data.message);
         setInput({ username: "", email: "", password: "" });
       }
     } catch (error) {
+      navigate("/login")
       console.log(error);
       toast.error(error.response.data.message);
     } finally {
@@ -85,7 +88,16 @@ const Signup = () => {
             className="my-2 focus-visible:ring-transparent"
           />
         </div>
-        <Button>Sign Up</Button>
+        {
+          loading ? (
+           <Button>
+              <Loader2 className="w-4 h-4 nr-2 animate-spin" />
+              Please Wait
+           </Button> 
+          ) : (
+            <Button>SignUp</Button>
+          )
+        } 
         <span className="text-center">Already have an account? <Link to="/login" className="text-blue-600">Login</Link></span>
       </form>
     </div>
