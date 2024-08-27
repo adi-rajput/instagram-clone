@@ -1,4 +1,5 @@
 import { Label } from "@radix-ui/react-label";
+import logo from "../assets/pngegg.png";
 import React, { useState }   from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -51,7 +52,8 @@ const Login = () => {
         className="flex flex-col gap-5 p-8 shadow-lg"
       >
         <div>
-          <h1 className="text-xl font-bold text-center ">LOGO</h1>
+          {/* <h1 className="text-xl font-bold text-center ">LOGO</h1> */}
+          <img src={logo} alt="Logo" className="h-auto ml-[4.5rem] w-36" />
           <p className="text-sm text-center">
             Login to see photos & videos from your friends
           </p>
