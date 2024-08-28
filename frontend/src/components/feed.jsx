@@ -1,10 +1,10 @@
 import React from 'react'
-import Post from './post'
+import Posts from './posts'
 
 const Feed = () => {
   return (
-    <div className='flex-1 my-8 flex-col items-center pl-[20%]'>
-        <Post />
+    <div className='flex flex-1 my-8 flex-col items-center justify-center pl-[20%]'>
+        <Posts />
     </div>
   )
 }

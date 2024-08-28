@@ -57,7 +57,7 @@ const LeftSidebar = () => {
   return (
     <div className="fixed top-0 z-10 left-0 px-4 border-r border-gray-300 w-[16%] h-screen">
       <div className="flex flex-col ">
-        <img src={logo} alt="Logo" className="h-auto w-44" />
+        <img src={logo} alt="Logo" className="h-auto my-6 w-44" />
         <div>
           {sidebarItems.map((item, index) => {
             return (
