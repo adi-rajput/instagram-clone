@@ -2,21 +2,11 @@ import React from "react";
 import { Dialog,DialogTrigger,DialogContent } from "./ui/dialog";
 import { MessageCircle } from "lucide-react";
 
-const CommentDialog = () => {
+const CommentDialog = ({open, setOpen}) => {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <MessageCircle className="cursor-pointer hover:text-gray-600 " />
-      </DialogTrigger>
-      <DialogContent className="flex flex-col items-center text-sm text-center">
-        <div className="flex items-center justify-between w-full">
-          <input
-            type="text"
-            placeholder="Add a comment"
-            className="w-full p-2 border-b-2 border-gray-300 focus:outline-none"
-          />
-          <button className="text-blue-500">Post</button>
-        </div>
+    <Dialog open={open} >
+      <DialogContent onInteractOutside={()=>setOpen(false)}>
+       <img src="https://images.unsplash.com/photo-1724710152067-f5cda1ed9820?q=80&w=464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="post_img" />
       </DialogContent>
     </Dialog>
   );

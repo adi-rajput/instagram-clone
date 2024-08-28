@@ -7,6 +7,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import CommentDialog from "./CommentDialog";
 const Post = () => {
   const [text, setText] = useState("");
+  const [open, setOpen] = useState(false);
   const changeEventHandler = (e) => {
     const inputText = e.target.value;
     if(inputText.trim())
@@ -57,7 +58,7 @@ const Post = () => {
       <div className="flex items-center justify-between my-2">
         <div className="flex items-center gap-3">
           <FaRegHeart size={"22px"} className="cursor-pointer" />
-          <MessageCircle className="cursor-pointer hover:text-gray-600 " />
+          <MessageCircle onClick={()=>setOpen(true)} className="text-sm text-gray-400 cursor-pointer " />
           <Send className="cursor-pointer hover:text-gray-600 " />
         </div>
         <Bookmark className="cursor-pointer hover:text-gray-600" />
@@ -67,8 +68,8 @@ const Post = () => {
         <span className="mr-2 font-medium">username</span>
         caption
       </p>
-      <span>view all 10 comments</span>
-      <CommentDialog />
+      <span onClick={()=>setOpen(true)} className="text-gray-600 cursor-pointer">view all 10 comments</span>
+      <CommentDialog open={open} setOpen={setOpen} />
       <div className="flex items-center justify-center">
         <input
           type="text"
