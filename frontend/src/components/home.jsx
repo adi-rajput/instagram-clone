@@ -1,8 +1,16 @@
 import React from 'react'
-
+import Feed from './feed'
+import { Outlet } from 'react-router'
+import RightSidebar from './RightSidebar'
 const Home = () => {
   return (
-    <div>Home</div>
+    <div className='flex '>
+          <div className='flex-grow'>
+                <Feed />
+                <Outlet/>
+          </div>
+          <RightSidebar/>
+    </div>
   )
 }
 
