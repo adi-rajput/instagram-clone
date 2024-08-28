@@ -58,7 +58,7 @@ const Post = () => {
       <div className="flex items-center justify-between my-2">
         <div className="flex items-center gap-3">
           <FaRegHeart size={"22px"} className="cursor-pointer" />
-          <MessageCircle onClick={()=>setOpen(true)} className="text-sm text-gray-400 cursor-pointer " />
+          <MessageCircle onClick={()=>setOpen(true)} className="text-sm cursor-pointer " />
           <Send className="cursor-pointer hover:text-gray-600 " />
         </div>
         <Bookmark className="cursor-pointer hover:text-gray-600" />
