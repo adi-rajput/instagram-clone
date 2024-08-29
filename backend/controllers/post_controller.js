@@ -1,7 +1,7 @@
 import sharp from "sharp";
 import { Post } from "../models/post_model.js";
 import  User  from "../models/user_models.js";
-//import  {Comment}  from "../models/comment_model.js";
+import  Comment  from "../models/comment_model.js";
 import cloudinary from "../utils/cloudinary.js";
 export const addNewPost = async (req, res) => {
   try {
@@ -59,23 +59,29 @@ export const getAllPost = async (req, res) => {
   try {
     const posts = await Post.find()
       .sort({ createdAt: -1 })
-      .populate({ path: "author", select: "username,profilePicture" })
+      .populate({ path: "author", select: "username profilePicture" })
       .populate({
         path: "comments",
-        sort: { createdAt: -1 },
+        options: { sort: { createdAt: -1 } }, // Use `options` for sorting nested fields
         populate: {
           path: "author",
-          select: "username,profilePicture",
+          select: "username profilePicture",
         },
       });
+
     return res.status(200).json({
       posts,
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching posts:", error);
+    return res.status(500).json({
+      message: "Failed to retrieve posts.",
+      success: false,
+    });
   }
 };
+
 
 export const getUserPost = async (req, res) => {
   try {
