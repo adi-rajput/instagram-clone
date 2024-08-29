@@ -31,8 +31,8 @@ app.use(cors(corsOptions));
 
 //routes
 app.use("/api/v1/user" , userRoute);
-app.use("/api/v1/user" , postRoute);
-app.use("/api/v1/user" , messageRoute);
+app.use("/api/v1/post" , postRoute);
+app.use("/api/v1/message" , messageRoute);
 //"http://locolhost:8000/api/v1/user/register"
 
 app.listen(PORT,()=>{

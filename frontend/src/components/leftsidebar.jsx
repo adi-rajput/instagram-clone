@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../assets/pngegg.png";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -13,17 +13,23 @@ import {
 import { toast } from "sonner";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuthUser } from "@/redux/authSlice";
+import CreatePost from "./CreatePost";
 
 const LeftSidebar = () => {
   const navigate = useNavigate();
   const {user} = useSelector((state)=>state.auth)
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  
   const logoutHandler = async () => {
     try {
       const res = await axios.get("http://localhost:8000/api/v1/user/logout", {
         withCredentials: true,
       });
       if (res.data.success) {
+        dispatch(setAuthUser(null))
         navigate("/login");
         toast.success(res.data.message);
       }
@@ -32,10 +38,19 @@ const LeftSidebar = () => {
       console.log(error);
     }
   };
+
+  const createPostHandler = () => {
+    setOpen(true);
+  }
+  
   const sideBarHandler = (textType) => {
     if(textType === "Logout"){
       logoutHandler();
     }
+    else if(textType === "Create"){
+      createPostHandler();
+    }
+    
   }
 
   const sidebarItems = [
@@ -76,6 +91,7 @@ const LeftSidebar = () => {
           })}
         </div>
       </div>
+      <CreatePost open={open} setOpen={setOpen}/>
     </div>
   );
 };

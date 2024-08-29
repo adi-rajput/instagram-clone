@@ -12,21 +12,26 @@ export const addNewPost = async (req, res) => {
     if (!image) {
       return res.status(400).json({ message: "Please upload an image." });
     }
-    //image upload
+
+    if (!image.mimetype.startsWith("image/")) {
+      return res.status(400).json({ message: "Invalid file type. Please upload an image." });
+    }
+
+    // Image upload
     const optimizedImage = await sharp(image.buffer)
       .resize({ width: 800, height: 800, fit: "inside" })
-      .toFormat(".jpeg", { quality: 80 })
+      .toFormat("jpeg", { quality: 80 })  // Corrected format string
       .toBuffer();
 
-    const fileUri = `data:image/jpeg;base64,${optimizedImage.toString(
-      "base64"
-    )}`;
+    const fileUri = `data:image/jpeg;base64,${optimizedImage.toString("base64")}`;
     const cloudResponse = await cloudinary.uploader.upload(fileUri);
+
     const post = await Post.create({
       caption,
       image: cloudResponse.secure_url,
       author: authorId,
     });
+
     const user = await User.findById(authorId);
     if (user) {
       user.posts.push(post._id);
@@ -36,12 +41,17 @@ export const addNewPost = async (req, res) => {
     await post.populate({ path: "author", select: "-password" });
 
     return res.status(201).json({
-      message: "new post added",
+      message: "New post added successfully.",
       success: true,
       post,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    return res.status(500).json({
+      message: "An error occurred while adding the post.",
+      success: false,
+      error: error.message,
+    });
   }
 };
 
