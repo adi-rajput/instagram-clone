@@ -62,12 +62,15 @@ export const getAllPost = async (req, res) => {
       .populate({ path: "author", select: "username profilePicture" })
       .populate({
         path: "comments",
-        options: { sort: { createdAt: -1 } }, // Use `options` for sorting nested fields
+        options: { sort: { createdAt: -1 } },
         populate: {
           path: "author",
           select: "username profilePicture",
         },
       });
+
+    // Log the posts to check the populated fields
+    console.log(posts);
 
     return res.status(200).json({
       posts,
@@ -81,6 +84,7 @@ export const getAllPost = async (req, res) => {
     });
   }
 };
+
 
 
 export const getUserPost = async (req, res) => {

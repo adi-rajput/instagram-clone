@@ -13,7 +13,8 @@ const useGetAllPost = () => {
           withCredentials: true,
         });
         if (res.data.success) {
-          dispatch(setPost(res.data.data));
+          console.log(res.data.posts);
+          dispatch(setPost(res.data.posts));
         }
       } catch (error) {
         console.error("Error fetching posts:", error);
@@ -21,7 +22,7 @@ const useGetAllPost = () => {
     };
 
     fetchAllPost();
-  }, [dispatch]); // Added dispatch to dependency array
+  }, [dispatch]);
 };
 
 export default useGetAllPost;
