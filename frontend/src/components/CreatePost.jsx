@@ -7,6 +7,7 @@ import { readFileAsDataURL } from "@/lib/utils";
 import { toast } from "sonner";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 
 const CreatePost = ({ open, setOpen }) => {
   const imageRef = useRef();
@@ -14,7 +15,9 @@ const CreatePost = ({ open, setOpen }) => {
   const [caption, setCaption] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const {user} = useSelector((state)=>state.auth)
+  const dispatch = useDispatch()
+  const {posts} = useSelector((state)=>state.post)
   const fileHandler = async (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -44,6 +47,7 @@ const CreatePost = ({ open, setOpen }) => {
         }
       );
       if (res.data.success) {
+        dispatch(setPost([res.data.post, ...posts]))
         toast.success(res.data.message);
       }
     } catch (error) {
@@ -61,12 +65,12 @@ const CreatePost = ({ open, setOpen }) => {
         </DialogHeader>
         <div className="flex items-center gap-3">
           <Avatar>
-            <AvatarImage src="" alt="img" />
+            <AvatarImage src={user?.profilePicture} alt="img" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-sm font-semibold">Username</h1>
-            <span className="text-sm text-gray-400">Bio here...</span>
+            <h1 className="text-sm font-semibold">{user?.username}</h1>
+            <span className="text-sm text-gray-500">Bio here...</span>
           </div>
         </div>
         <Textarea
