@@ -54,7 +54,7 @@ const Login = () => {
     <div className="flex items-center justify-center w-screen h-screen">
       <form
         onSubmit={signUpHandler}
-        className="flex flex-col gap-5 p-8 shadow-lg"
+        className="flex flex-col gap-4 p-8 shadow-lg"
       >
         <div>
           {/* <h1 className="text-xl font-bold text-center ">LOGO</h1> */}
