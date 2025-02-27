@@ -63,16 +63,7 @@ export const login = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
-    const populatePosts = await Promise.all(
-      user.posts.map(async (postId) => {
-        const post = await Post.findById(postId);
-        if(post.author.equals(user._id))
-        {
-          return post;
-        }
-        return null;
-      })
-    );
+    const populatePosts = await User.findOne({email : email}).populate("posts");
     user = {
       _id: user._id,
       username: user.username,
@@ -83,6 +74,7 @@ export const login = async (req, res) => {
       following: user.following,
       posts: populatePosts,
     };
+
 
     return res
       .cookie("token", token, {
